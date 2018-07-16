@@ -48,8 +48,8 @@ class Home extends Component {
                             <List dense={true}>
                                 <FadeIn>
                                 {unansweredQuestions.map(questionId => (
-                                    <Link key={questionId} to={`/questions/${questionId}`}>
-                                        <ListItem dense button className={classes.listItem} style={{boxShadow: '6px 6px 6px 2px #333', marginTop: '10px'}}>
+                                    <Link style={{textDecoration: 'none'}} key={questionId} to={`/questions/${questionId}`}>
+                                        <ListItem dense button className={classes.listItem} style={{boxShadow: '6px 6px 6px 2px #333', marginTop: '10px', textDecoration: 'none'}}>
                                             <Question id={questionId} />
                                         </ListItem>
                                     </Link>

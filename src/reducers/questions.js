@@ -1,5 +1,4 @@
-import { RECEIVE_QUESTIONS, ADD_POLL } from '../actions/questions'
-import { USER_VOTE } from '../actions/shared'
+import { USER_VOTE, ADD_POLL, RECEIVE_QUESTIONS } from '../actions/actionTypes'
 
 const questions = (state = {}, action) => {
     switch (action.type) {

@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { Avatar } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
 import { handleUserAnswer } from '../actions/shared'
+import FourOhFour from '../components/FourOhFour'
+import { getAvatar } from '../utils/constants'
 
 class AnswerQuestion extends Component {
     handleAnswer(e, answer) {
@@ -16,7 +18,7 @@ class AnswerQuestion extends Component {
 
     average(option) {
         const { question } = this.props
-        let total = question.optionOne.votes.length + question.optionTwo.votes.length
+        const total = question.optionOne.votes.length + question.optionTwo.votes.length
         return (option.votes.length / total * 100).toFixed(2)
     }
 
@@ -35,16 +37,21 @@ class AnswerQuestion extends Component {
     render() {
 
         const {author, question, authedUser} = this.props
+        
+        if(question === null || question === undefined) {
+            return <FourOhFour />
+        }
 
         if(authedUser === null){
             return <Redirect to='/login' />
         }
 
+
         return (
             <Paper style={{width: '75%', margin:'10px auto', textAlign:'center'}}>
             {this.isQuestionAnswered() ? (
                     <div style={{display:'flex', flexWrap: 'wrap', alignItems: 'center'}}>
-                        <Avatar style={{margin: 10, marginLeft: '8%'}} alt="" src={author.avatarURL} />
+                        <Avatar style={{margin: 10, marginLeft: '8%'}} alt="" src={getAvatar(author.avatarURL)} />
                         <Typography style={{textAlign: 'left'}}>{author.name} asks: <strong>Would you rather</strong>...</Typography>
                         <div style={{flex: '0 0 100%', marginBottom: '3%'}}>
                             <Typography variant="caption">{question.optionOne.votes.length} of {question.optionOne.votes.length + question.optionTwo.votes.length} voted </Typography>
@@ -58,7 +65,7 @@ class AnswerQuestion extends Component {
                     </div>
                 ) : (
                     <div style={{display:'flex', flexWrap: 'wrap', alignItems: 'center'}}>
-                        <Avatar style={{margin: 10, marginLeft: '8%'}} alt="" src={author.avatarURL} />
+                        <Avatar style={{margin: 10, marginLeft: '8%'}} alt="" src={getAvatar(author.avatarURL)} />
                         <Typography style={{textAlign: 'left'}}>{author.name} asks: <strong>Would you rather</strong>...</Typography>
                         <div style={{flex: '0 0 100%', marginBottom: '3%'}}>
                             <Button onClick={(e) => this.handleAnswer(e, 'optionOne')}>{question.optionOne.text}</Button>

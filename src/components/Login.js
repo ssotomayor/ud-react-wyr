@@ -7,6 +7,7 @@ import { Typography, Select, InputLabel } from '@material-ui/core'
 import { FormControl, withStyles } from 'material-ui-next'
 import { setAuthedUser } from '../actions/authedUser'
 import { Redirect } from 'react-router-dom'
+import { getAvatar } from '../utils/constants'
 
 const styles = theme => ({
     button: {
@@ -29,8 +30,7 @@ class Login extends Component {
     
     handleChange = (e) => {
         e.preventDefault()
-        this.setState({ [e.target.name]: e.target.value }, () => {
-            // console.log(this.state.user)
+            this.setState({ [e.target.name]: e.target.value }, () => {
         })
     }
 
@@ -65,7 +65,7 @@ class Login extends Component {
                         id: 'user-select',
                         }}>
                         {users.map((user) => 
-                            <MenuItem key={user.id} value={user.id}>{user.avatarURL && <img src={user.avatarURL} style={{borderRadius: '100%', margin: '5px', marginBottom: '0px'}} width='25' height='25' alt=""/>} {user.name}</MenuItem>
+                            <MenuItem key={user.id} value={user.id}>{<img src={getAvatar(user.avatarURL)} style={{borderRadius: '100%', margin: '5px', marginBottom: '0px'}} width='25' height='25' alt=""/>} {user.name}</MenuItem>
                         )}
                 </Select>
             </FormControl>

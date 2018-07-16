@@ -1,5 +1,4 @@
-import { RECEIVE_USERS } from "../actions/users";
-import { USER_VOTE } from "../actions/shared";
+import { USER_VOTE, ADD_POLL, RECEIVE_USERS } from "../actions/actionTypes"
 
 const users = (state = {}, action) => {
     switch (action.type) {
@@ -20,6 +19,14 @@ const users = (state = {}, action) => {
                     
                 }
             }
+        case ADD_POLL:
+            return {
+                ...state,
+                [action.authedUser]: {
+                    ...state[action.authedUser],
+                    questions: state[action.authedUser].questions.concat(action.question.id)
+                }
+            }            
         default:
             return state
     }

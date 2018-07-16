@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react'
 import { connect } from 'react-redux'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
+import { getAvatar } from '../utils/constants'
 
 class Question extends Component {
     render() {
@@ -10,8 +11,8 @@ class Question extends Component {
 
         return (
                 <Fragment>
-                        <Avatar alt="" src={user.avatarURL} />
-                        <ListItemText primary={`${user.name} asks: Would you Rather? ${question.optionOne.text}...`} />
+                        <Avatar alt="" src={getAvatar(user.avatarURL)} />
+                        <ListItemText style={{textDecoration: 'none'}} primary={`${user.name} asks: Would you Rather? ${question.optionOne.text}...`} />
                 </Fragment>
         )
     }

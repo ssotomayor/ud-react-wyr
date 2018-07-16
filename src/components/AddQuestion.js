@@ -3,14 +3,16 @@ import { Button, Paper, Typography } from 'material-ui-next'
 import { connect } from 'react-redux'
 import { Avatar, Input } from '@material-ui/core'
 import { Redirect } from 'react-router-dom'
-import { handleAddQuestion } from '../actions/questions'
+import { handleAddQuestion } from '../actions/shared'
+import { getAvatar } from '../utils/constants'
+import { withRouter } from 'react-router-dom'
+
 
 class AddQuestion extends Component {
 
     state = {
         optionOne: '',
-        optionTwo: '',
-        toHome: false
+        optionTwo: ''
     }
 
     handleChange = (e, option) => {
@@ -18,32 +20,14 @@ class AddQuestion extends Component {
         this.setState(() => ({
           [option]: text
         }))
-      }
-
-    handleSubmit(e) {
-        e.preventDefault()
-        const { dispatch } = this.props
-        const question = {
-            optionOneText: this.state.optionOne,
-            optionTwoText: this.state.optionTwo
-        }
-
-        dispatch(handleAddQuestion(question)).then(() => {
-            this.setState({toHome: true}) 
-        })
     }
 
     render() {
 
-        const {authedUser, users} = this.props
-        const {toHome} = this.state
+        const {authedUser, users, handleSubmit, history} = this.props
 
         if(authedUser === null){
             return <Redirect to='/login' />
-        }
-
-        if(toHome === true){
-            return <Redirect to='/' />
         }
 
         return (
@@ -51,10 +35,10 @@ class AddQuestion extends Component {
                 <Typography variant="title" color="primary" style={{textAlign: 'center', margin: '5%'}}><strong>Would you rather</strong>...</Typography>
                 <Paper style={{width: '75%', margin:'10px auto', textAlign:'center'}}>
                     <div style={{display:'flex', flexWrap: 'wrap', alignItems: 'center'}}>
-                        <Avatar style={{margin: '10px', marginLeft: '8%'}} alt="" src={users[authedUser].avatarURL} />
+                        <Avatar style={{margin: '10px', marginLeft: '8%'}} alt="" src={getAvatar(users[authedUser].avatarURL)} />
                         <Typography style={{textAlign: 'left'}}>{users[authedUser].name} asks: <strong>Would you rather</strong>...</Typography>
                         <div style={{flex: '0 0 100%', marginBottom: '3%'}}>
-                        <form onSubmit={(e) => this.handleSubmit(e)}>
+                        <form onSubmit={(e) => handleSubmit(e, this.state.optionOne, this.state.optionTwo, history)}>
                             <Typography variant="caption">Option One</Typography>
                             <Input style={{margin: '5%'}} onChange={(e) => this.handleChange(e, 'optionOne')} />
                             <Typography variant="caption">Option Two</Typography>
@@ -71,6 +55,22 @@ class AddQuestion extends Component {
     }
 }
 
+const mapDispatchToProps = (dispatch) => {
+    return {
+      handleSubmit: (e, optionOneText, optionTwoText, history) => {
+        e.preventDefault()
+        const question = {
+            optionOneText: optionOneText,
+            optionTwoText: optionTwoText
+        }
+
+        dispatch(handleAddQuestion(question)).then(() => {
+            history.push('/')
+        })
+      }
+    }
+}
+
 function mapStateToProps({users, authedUser}){
     return {
         authedUser,
@@ -78,4 +78,4 @@ function mapStateToProps({users, authedUser}){
     }
 }
 
-export default connect(mapStateToProps)(AddQuestion)
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AddQuestion))
