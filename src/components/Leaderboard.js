@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { ListItem, List, Paper, Typography, Avatar, ListItemAvatar, ListItemText, ListItemIcon } from 'material-ui-next'
